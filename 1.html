@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+        // 1) Установите куку с именем 'name' и значением 'Иван'.Выведите содержимое этой куки на экран.  
+        setCookie('name', 'Иван');
+        console.log(getCookie('name'));
+        // 2)  Установите куку с вашем именем и вашим возрастом.Выведите на экран содержимое этих двух кук.  
+        setCookie('name', 'Alisher');
+        setCookie('age', '123');
+        console.log(getCookie('name'));
+        console.log(getCookie('age'));
+        
+    </script>
+</body>
+
+</html>

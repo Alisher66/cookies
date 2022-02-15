@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="main-text"></p>
+    <input type="text" id="name" placeholder="name">
+    <input type="text" id="age" placeholder="age">
+    <input type="text" id="city" placeholder="city">
+    <input type="password" id="pass" placeholder="pass">
+
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 5) Дана форма с инпутами. Пользователь вводит какие-то данные и закрывает страницу (не факт, что он заполнил всю форму). Сделайте так, чтобы при следующем заходе на страницу введенные им ранее данные стояли на своих местах.  
+
+
+
+        window.addEventListener("beforeunload", (e) => {
+            let inputs = document.querySelectorAll("input");
+
+            inputs.forEach(input => {
+                if (input.type == "password") return
+                if(input.value.trim() != "") setCookie(input.id, input.value.trim());
+            })
+        })
+
+        function showValue() {
+            let inputs = document.querySelectorAll("input");
+            inputs.forEach(input =>{
+                let cookieEl = getCookie(input.id);
+                if(cookieEl) input.value = cookieEl;
+            })
+        }
+
+        showValue();
+
+    </script>
+</body>
+
+</html>

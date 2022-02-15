@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="main-text">Укажите день рождения</p>
+    <input type="date" id="text">
+    <input type="button" id="add" value="add cookie">
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 4) При заходе на страницу спросите с помощью инпута день рождения пользователя. Когда он зайдет с следующий раз - напишите сколько месяцев, дней, часов, минут и секунд осталось до его дня рождения. И пусть по этим числам запуститься обратный отсчет (то есть они будут тикать).
+
+        const btn = document.querySelector("#add");
+        const dateEl = document.querySelector("#text");
+        const mainText = document.querySelector(".main-text");
+
+        btn.addEventListener("click", (e) => {
+            let text = dateEl.value
+            if (text == "") return
+            let date = new Date(text);
+            date.setHours(0, 0, 0, 0);
+            setCookie('birthday', date.getTime());
+            dateEl.value = ""
+        })
+
+
+        showBirthday();
+
+        function showBirthday() {
+            if (!getCookie('birthday')) return
+
+            const date = new Date(+getCookie('birthday'));
+
+            const nextBday = new Date(+getCookie('birthday'));
+
+            nextBday.setFullYear(new Date().getFullYear());
+            if (nextBday.getTime() <= Date.now()) nextBday.setFullYear(new Date().getFullYear() + 1);
+
+            let time;
+
+            setInterval(() => {
+                time = nextBday.getTime() - Date.now();
+
+                let res = new Date(time);
+
+                let res_str = `до дня рождения осталось ${res.getMonth()} - месяцев, ${res.getDate()-1} дней и ${res.getUTCHours()}:${res.getUTCMinutes()}:${res.getUTCSeconds()}`
+                
+                mainText.innerHTML = res_str;
+
+            }, 1000)
+        }
+
+
+    </script>
+</body>
+
+</html>

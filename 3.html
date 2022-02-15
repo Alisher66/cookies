@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="main-text"></p>
+    <input type="text" id="text">
+    <input type="button" id="add" value="add cookie">
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    
+    <script>
+
+        // 3) Дан инпут.Ведите в него город, например, Минск.Сохраните его в куки.Зайдя на другую страницу сайта вы должны увидеть фразу 'ваш город - Минск'.
+        const btn = document.querySelector("#add");
+        const textEl = document.querySelector("#text");
+        btn.addEventListener("click", (e) => {
+            let text = textEl.value.trim();
+            if (text == "") return
+            setCookie('city', text);
+            textEl.value = ""
+        })
+
+        const mainText = document.querySelector(".main-text");
+        getCookie('city') ? mainText.textContent = `Ваш город ${getCookie('city')}` : mainText.textContent = "";
+
+
+
+    </script>
+</body>
+
+</html>

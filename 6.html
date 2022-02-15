@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="main-text"></p>
+    <input type="checkbox" id="name1" name="1">
+    <input type="checkbox" id="name2" name="2">
+    <input type="checkbox" id="name3" name="3">
+    <input type="checkbox" id="name4" name="4">
+
+
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 6) Даны чекбоксы. Пользователь произвольно отмечает их и закрывает страницу. Сделайте так, чтобы при следующем заходе на страницу чекбоксы стали отмеченными так, как это сделал пользователь ранее.    
+
+
+
+        window.addEventListener("beforeunload", (e) => {
+            let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            checkboxes.forEach(checkbox => {
+                setCookie(checkbox.id, +checkbox.checked);
+            })
+        })
+
+        function showValue() {
+            let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            console.log(checkboxes);
+            checkboxes.forEach(checkbox => {
+                let cookieEl = getCookie(checkbox.id);
+                checkbox.checked = !!(+cookieEl);
+            })
+        }
+
+        showValue();
+
+    </script>
+</body>
+
+</html>
