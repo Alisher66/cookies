@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p class="main-text">нажмите старт для начало счеткичка (10 секунд)</p>
+    <input type="button" id="start" value="Старт">
+
+
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 7) При заходе на страницу появляется счетчик обратного отсчета. Когда он доходит до нуля, на странице пишется - 'отсчет закончен'. При обновлении страницы счетчик не должен начинать идти заново.  
+
+        const startBtn = document.querySelector("#start");
+        const mainText = document.querySelector(".main-text");
+
+
+
+        function start() {
+            const count = +getCookie("started")
+            if (count == 0) {
+                startBtn.disabled = true;
+                mainText.textContent = "отсчет закончен";
+            } else if (!count) {
+                setCookie("started", 10)
+                startBtn.addEventListener("click", (e) => {
+                    let i = +getCookie("started");
+                    let interval = setInterval(() => {
+                        i--;
+                        setCookie("started", i)
+                        mainText.textContent = getCookie("started");
+                        if (i == 0) {
+                            clearInterval(interval)
+                            start();
+                        }
+                    }, 1000)
+                })
+            }
+        }
+        start()
+    </script>
+</body>
+
+</html>

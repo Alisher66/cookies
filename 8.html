@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <textarea name="" id="text-main"></textarea>
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 8) Дан тектареа. Пользователь может потянуть за его угол и изменить его размер. Сделайте так, чтобы при следующем заходе на страницу, текстареа был заданного размера.  
+
+
+
+        const mainText = document.querySelector("#text-main");
+
+       
+        let data = getCookie("mainTextarea");
+        if (data) {
+            data = JSON.parse(data)
+            mainText.style.width = data.size.width
+            mainText.style.height = data.size.height
+        }
+
+        window.addEventListener("beforeunload", (e) => {
+            let mainText = document.querySelector("#text-main");
+            setCookie("mainTextarea", {
+                size: {
+                    width: mainText.offsetWidth + "px",
+                    height: mainText.offsetHeight + "px"
+                }
+            });
+        })
+
+    </script>
+</body>
+
+</html>

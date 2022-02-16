@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="text-main">
+    <select name="" id="select_logs"></select>
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        // 9) Дан инпут. В него можно ввести данные, затем поредактировать их, затем еще поредактировать. Пусть инпут хранит историю своих изменений (даже после перезагрузки страницы). Сверху над инпутом должны появится стрелочки, с помощью которых можно перемещаться по истории. 
+
+
+
+        const inputEl = document.querySelector("#text-main");
+        const selectEl = document.querySelector("#select_logs")
+
+        inputEl.addEventListener("change", (e) => {
+            const date = new Date();
+            let logs = []
+            if (getCookie("logsInput")) {
+                logs = JSON.parse(getCookie("logsInput")) || []
+            }
+            let log = {
+                value: inputEl.value,
+                date: date
+            }
+            logs.push(log);
+
+            setCookie("logsInput", logs)
+            showLogs();
+
+        })
+
+        function showLogs() {
+            if (!getCookie("logsInput")) return
+
+            let logs = JSON.parse(getCookie("logsInput"))
+
+            let tempHtml = logs.map((log, index) => {
+                return `<option value="${index}">${log.value}</option>`
+            })
+
+            selectEl.innerHTML = tempHtml.join("");
+            selectEl.value = tempHtml.length-1
+        }
+
+        showLogs()
+
+        function selectLog() {
+            let logs = JSON.parse(getCookie("logsInput"))
+            inputEl.value = logs.at(-1).value
+
+            selectEl.addEventListener("change", (e) => {
+                logs = JSON.parse(getCookie("logsInput"))
+                inputEl.value = logs[+selectEl.value].value
+            })
+        }
+
+        selectLog();
+
+    </script>
+</body>
+
+</html>
