@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <div class="content">
+        <p id="advtText"></p>
+        <input type="button" id="remove" value="Убрть">
+    </div>
+
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        //11) Пусть по заходу на страницу показывается определенный рекламный текст. Рядом с ним сделайте кнопку 'убрать', по нажатию на которую этот рекламный текст не показывается этому пользователю ровно один день.  
+
+        const adv = [
+            { id: 0, text: "reklama 1" },
+            { id: 1, text: "reklama 2" },
+            { id: 2, text: "reklama 3" },
+            { id: 3, text: "reklama 4" },
+            { id: 4, text: "reklama 5" },
+            { id: 5, text: "reklama 6" },
+            { id: 6, text: "reklama 7" },
+            { id: 7, text: "reklama 8" },
+            { id: 8, text: "reklama 9" },
+            { id: 9, text: "reklama 10" },
+        ]
+
+        const wrap = document.querySelector(".content");
+        const text = wrap.querySelector("#advtText")
+        const removeBtn = wrap.querySelector("#remove")
+
+        function showAdvertising() {
+            let rand = parseInt(Math.random() * adv.length)
+
+            let bannedAds = [];
+            if (getCookie("bannedAd")) {
+                bannedAds = JSON.parse(getCookie("bannedAd")) || [];
+            }
+
+            // while(true) {
+            //     let rand = parseInt(Math.random() * adv.length)
+            //     if(bannedAds[ran)
+            // }
+            text.textContent = adv[rand].text
+            removeAd(rand)
+        }
+
+        function removeAd(index) {
+            removeBtn.addEventListener("click", (e) => {
+                let bannedAds = [];
+                if (getCookie("bannedAd")) {
+                    bannedAds = JSON.parse(getCookie("bannedAd")) || [];
+                }
+                let date = new Date();
+                date.setDate(date.getDate()+1);
+                let ad = {
+                    id: index,
+                    text: adv[index].text,
+                }
+                bannedAds.push(ad);
+                setCookie("bannedAd", bannedAds, {expires: date});
+            })
+        }
+
+        showAdvertising()
+
+    </script>
+</body>
+
+</html>

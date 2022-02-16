@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="auth">
+        <!-- <p class="message"></p> -->
+        <p>Введите логин</p>
+        <input type="text" id="text">
+        <input type="button" value="Login" id="login">
+    </div>
+
+    <div class="content" style="display:none">
+        <p id="passed_time">C последнего захода прошло </p>
+        <p id="passed_count">вы посещали эту страницу </p>
+
+    </div>
+
+
+    <script src="https://unpkg.com/cookielib/src/cookie.js"></script>
+    <script>
+
+        //10) Дан сайт. Пусть каждая страница для каждого посетителя хранит время последнего захода и количество заходов на нее этим посетителем. Пусть эти данные показываются при заходе в формате 'с последнего захода прошло ... вы посещали эту страницу ... раз'.  
+
+
+
+        const authWrap = document.querySelector(".auth");
+        // const message = authWrap.querySelector(".message");
+        const text = authWrap.querySelector("#text");
+        const btn = authWrap.querySelector("#login")
+
+        const content = document.querySelector(".content");
+        const passedTime = content.querySelector("#passed_time")
+        const passedСount = content.querySelector("#passed_count")
+
+        btn.addEventListener("click", (e) => {
+            let users = [];
+            if (getCookie("users")) {
+                users = JSON.parse(getCookie("users")) || [];
+            }
+
+            const login = text.value.trim();
+            const date = new Date();
+            if (login == "") return
+
+            let tempUser = {
+                login,
+                logDate: [date],
+            }
+            if (users.length == 0) {
+                users.push(tempUser);
+            } else {
+                users.forEach(user => {
+                    if (user.login != login) {
+                        users.push(tempUser);
+                    } else {
+                        user.logDate.push(date)
+                    }
+                });
+            }
+
+            setCookie("users", users);
+            showUsersInfo(login, users);
+        })
+
+        function showUsersInfo(login, users) {
+            authWrap.style.display = "none";
+            content.style.display = "block";
+
+            const user = users.find(user => user.login == login)
+
+            if (user.logDate.length > 1) {
+                
+                const last = new Date(user.logDate.at(-2))
+                const now = new Date();
+                let dif = new Date(now.getTime() - last.getTime());
+
+                passedTime.textContent += ` ${dif.getMonth()} месяц, ${dif.getDate() - 1} дней, ${dif.getUTCHours()}:${dif.getUTCMinutes()}:${dif.getUTCSeconds()} назад`
+            } else {
+                passedTime.textContent = "Вы первые у нас"
+            }
+
+            passedСount.textContent += ` ${user.logDate.length - 1}`
+        }
+
+
+
+    </script>
+</body>
+
+</html>
